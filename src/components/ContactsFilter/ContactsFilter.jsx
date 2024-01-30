@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { changeFilter } from '../../redux/filterSlice';
 import ContactsFilterStyled from './ContactsFilter.styled';
 
@@ -11,7 +11,7 @@ const ContactsFilter = () => {
       <input
         type="text"
         value={name}
-        onChange={evt => dispatch(changeFilter(evt.currentTarget.value))}
+        onChange={evt => dispatch(changeFilter(evt.target.value))}
       />
     </ContactsFilterStyled>
   );
