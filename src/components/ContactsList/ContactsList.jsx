@@ -3,17 +3,17 @@ import ContactItem from './ContactItem';
 
 import ContactsListSteled from './ContactsList.styled';
 
-const ContactsList = ({ contacts, deleteContact }) => {
+const ContactsList = ({ contacts }) => {
   const contactItems = useMemo(
     () =>
       contacts.map(contact => (
         <ContactItem
           key={contact.id}
           contact={contact}
-          deleteContact={deleteContact}
+          // deleteContact={deleteContact}
         />
       )),
-    [contacts, deleteContact]
+    [contacts]
   );
   return (
     <ContactsListSteled>

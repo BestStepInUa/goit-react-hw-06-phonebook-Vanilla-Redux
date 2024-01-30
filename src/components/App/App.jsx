@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
-import { nanoid } from 'nanoid';
-import toast, { Toaster } from 'react-hot-toast';
+import { useEffect } from 'react';
+import { Toaster } from 'react-hot-toast';
 
 import AddContactForm from 'components/AddContactForm';
 import ContactsList from 'components/ContactsList';
@@ -40,11 +39,11 @@ const App = () => {
   //   setFilter(evt.currentTarget.value);
   // };
 
-  const deleteContact = id => {
-    setContacts(prevContacts => [
-      ...prevContacts.filter(contact => contact.id !== id),
-    ]);
-  };
+  // const deleteContact = id => {
+  //   setContacts(prevContacts => [
+  //     ...prevContacts.filter(contact => contact.id !== id),
+  //   ]);
+  // };
 
   const visibleContacts = () => {
     const normalizedFilter = filter.toLocaleLowerCase();
@@ -63,11 +62,11 @@ const App = () => {
   return (
     <AppContainer>
       <h1>Phonebook</h1>
-      <AddContactForm onFormSubmit={handleAddContactFormSubmit} />
+      <AddContactForm />
       <ContactsFilter />
       <ContactsList
         contacts={visibleContacts()}
-        deleteContact={deleteContact}
+        // deleteContact={deleteContact}
       />
       <Toaster position="top-right" toastOptions={{ duration: 2000 }} />
     </AppContainer>

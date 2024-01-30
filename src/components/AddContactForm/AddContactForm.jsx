@@ -1,5 +1,8 @@
 import { useReducer } from 'react';
 import AddContactFormStyled from './Addcontactform.styled.';
+import { useSelector } from 'react-redux';
+import toast from 'react-hot-toast';
+import { addContact } from 'redux/contactsSlice';
 
 const INITIAL_STATE = {
   name: '',
@@ -18,6 +21,7 @@ function reducer(prevState, action) {
 }
 
 const AddContactForm = () => {
+  const contacts = useSelector(state => state.contacts);
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
 
   const handelChange = evt => {
@@ -27,7 +31,14 @@ const AddContactForm = () => {
 
   const handelFormSubmit = evt => {
     evt.preventDefault();
-    onFormSubmit(state);
+    const name = evt.target.elements.name.value;
+    const number = evt.target.elements.number.value;
+    const isDublicated = contacts.find(contact => contact.name === name);
+    if (isDublicated) {
+      toast.error(`${name} is already in contacts.`);
+      return;
+    }
+    dispatch(addContact({ name, number }));
     reset();
   };
 
