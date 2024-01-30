@@ -1,39 +1,30 @@
-import { useReducer } from 'react';
-import AddContactFormStyled from './Addcontactform.styled.';
-import { useSelector } from 'react-redux';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
-import { addContact } from 'redux/contactsSlice';
+import { addContact } from '../../redux/contactsSlice';
+import AddContactFormStyled from './Addcontactform.styled.';
 
 const INITIAL_STATE = {
   name: '',
   number: '',
 };
 
-function reducer(prevState, action) {
-  if (action.type === 'reset') {
-    return INITIAL_STATE;
-  } else {
-    return {
-      ...prevState,
-      [action.type]: action.payload,
-    };
-  }
-}
-
 const AddContactForm = () => {
   const contacts = useSelector(state => state.contacts);
-  const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
+  const [state, setState] = useState(INITIAL_STATE);
+  const dispatch = useDispatch();
 
   const handelChange = evt => {
-    const { name, value } = evt.currentTarget;
-    dispatch({ type: name, payload: value });
+    const { name, value } = evt.target;
+    setState(prevState => ({ ...prevState, [name]: value }));
   };
 
   const handelFormSubmit = evt => {
     evt.preventDefault();
-    const name = evt.target.elements.name.value;
-    const number = evt.target.elements.number.value;
-    const isDublicated = contacts.find(contact => contact.name === name);
+    const { name, number } = state;
+    const isDublicated = contacts.find(
+      contact => contact.name.toLowerCase() === name.toLowerCase()
+    );
     if (isDublicated) {
       toast.error(`${name} is already in contacts.`);
       return;
@@ -43,7 +34,7 @@ const AddContactForm = () => {
   };
 
   const reset = () => {
-    dispatch({ type: 'reset', payload: INITIAL_STATE });
+    setState(INITIAL_STATE);
   };
 
   return (

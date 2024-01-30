@@ -1,24 +1,27 @@
 import { useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import ContactItem from './ContactItem';
-
 import ContactsListSteled from './ContactsList.styled';
 
-const ContactsList = ({ contacts }) => {
-  const contactItems = useMemo(
+const ContactsList = () => {
+  const contacts = useSelector(state => state.contacts);
+  const visibleContacts = () => {
+    const normalizedFilter = filter.toLocaleLowerCase();
+    return contacts.filter(({ name }) =>
+      name.toLocaleLowerCase().includes(normalizedFilter)
+    );
+  };
+  const visibleContactItems = useMemo(
     () =>
-      contacts.map(contact => (
-        <ContactItem
-          key={contact.id}
-          contact={contact}
-          // deleteContact={deleteContact}
-        />
+      visibleContacts.map(contact => (
+        <ContactItem key={contact.id} contact={contact} />
       )),
-    [contacts]
+    [visibleContacts]
   );
   return (
     <ContactsListSteled>
       <h2>Contacts</h2>
-      <ul>{contactItems}</ul>
+      <ul>{visibleContactItems}</ul>
     </ContactsListSteled>
   );
 };
