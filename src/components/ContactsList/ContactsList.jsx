@@ -5,19 +5,20 @@ import ContactsListSteled from './ContactsList.styled';
 
 const ContactsList = () => {
   const contacts = useSelector(state => state.contacts);
-  const visibleContacts = () => {
-    const normalizedFilter = filter.toLocaleLowerCase();
-    return contacts.filter(({ name }) =>
-      name.toLocaleLowerCase().includes(normalizedFilter)
-    );
-  };
-  const visibleContactItems = useMemo(
-    () =>
-      visibleContacts.map(contact => (
-        <ContactItem key={contact.id} contact={contact} />
-      )),
-    [visibleContacts]
-  );
+  const filter = useSelector(state => state.filter);
+  const normalizedFilter = filter.toLocaleLowerCase();
+
+  const visibleContactItems = useMemo(() => {
+    const visibleContacts = () => {
+      return contacts.filter(({ name }) =>
+        name.toLocaleLowerCase().includes(normalizedFilter)
+      );
+    };
+    visibleContacts.map(contact => (
+      <ContactItem key={contact.id} contact={contact} />
+    ));
+  }, [contacts, normalizedFilter]);
+
   return (
     <ContactsListSteled>
       <h2>Contacts</h2>
